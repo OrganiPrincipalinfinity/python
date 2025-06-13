@@ -1,0 +1,277 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Gestión de usuarios",
+    "description": "API para registrar, listar, buscar, editar y eliminar aprendices.",
+    "version": "1.1.0"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:5000"
+    }
+  ],
+  "tags":[
+    {
+    "name": "Usuarios",
+    "description": "Todo sobre la gestión de aprendices"
+    },
+    {
+    "name": "Evento",
+    "description": "Todo sobre la gestión de eventos"
+    }
+  ],
+  "paths": {
+    "/usuarios/registrar": {
+      "post": {
+        "tags":["Usuarios"],
+        "summary": "Registrar un nuevo aprendiz",
+        "description": "Este endpoint permite registrar un nuevo aprendiz en el sistema. Requiere enviar un objeto JSON con los datos del aprendiz como nombre, género, tipo de formación (`frm`) y número de documento (`numdoc`).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["nombre", "genero", "frm", "numdoc"],
+                "properties": {
+                  "nombre": { "type": "string" },
+                  "genero": { "type": "string" },
+                  "frm": { "type": "string" },
+                  "numdoc": { "type": "string" }
+                },
+                "example": {
+                  "nombre": "Jessica Right",
+                  "genero": "Femenino",
+                  "frm": "adso",
+                  "numdoc": "123456789"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Devuelve un mensaje de confirmación indicando que el aprendiz fue registrado correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": { "type": "string" }
+                  },
+                  "example": {
+                    "mensaje": "Aprendiz Registrado"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": { "type": "string" }
+                  },
+                  "example": {
+                    "mensaje": "faltan parametro en la peticion..."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuarios/eliminar/{id}": {
+      "delete": {
+        "tags":["Usuarios"],
+        "summary": "Eliminar un aprendiz por ID",
+        "description":"Este endpoint permite eliminar un aprendiz del sistema utilizando su identificador único (ID). Si el ID proporcionado es válido y corresponde a un aprendiz existente, se eliminará de forma permanente.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve un mensaje de confirmación indicando que el aprendiz fue eliminado correctamente del sistema.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": { "type": "string" }
+                  },
+                  "example": {
+                    "mensaje": "Aprendiz Eliminado"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuarios/listar": {
+      "get": {
+        "tags":["Usuarios"],
+        "summary": "Listar todos los aprendices",
+        "description":"Este endpoint permite obtener un listado completo de los aprendices registrados en el sistema. La respuesta incluye información básica como nombre, género, tipo de formación y número de documento de cada aprendiz.",
+        "responses": {
+          "200": {
+            "description": "Respuesta exitosa que contiene la lista de aprendices.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "integer" },
+                      "nombre": { "type": "string" },
+                      "genero": { "type": "string" },
+                      "formacion": { "type": "string" },
+                      "numerodoc": { "type": "string" }
+                    },
+                    "example": 
+                      {
+                        "nombre": "Jessica Right",
+                        "genero": "Femenino",
+                        "frm": "adso",
+                        "numdoc": "123456789"
+                      }                      
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuarios/editar/{id}": {
+      "patch": {
+        "tags":["Usuarios"],
+        "summary": "Editar aprendiz existente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["nombre", "genero", "frm", "numdoc"],
+                "properties": {
+                  "nombre": { "type": "string" },
+                  "genero": { "type": "string" },
+                  "frm": { "type": "string" },
+                  "numdoc": { "type": "string" }
+                },
+                "example": {
+                  "nombre": "Jessica Right",
+                  "genero": "Femenino",
+                  "frm": "adso",
+                  "numdoc": "123456789"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Aprendiz editado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    ,
+    "/evento/registrar": {
+      "post": {
+        "tags":["Evento"],
+        "summary": "Registrar un nuevo evento",
+        "description": "Este endpoint permite registrar un nuevo aprendiz en el sistema. Requiere enviar un objeto JSON con los datos del aprendiz como nombre, género, tipo de formación (`frm`) y número de documento (`numdoc`).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["nombre", "genero", "frm", "numdoc"],
+                "properties": {
+                  "nombre": { "type": "string" },
+                  "genero": { "type": "string" },
+                  "frm": { "type": "string" },
+                  "numdoc": { "type": "string" }
+                },
+                "example": {
+                  "nombre": "Jessica Right",
+                  "genero": "Femenino",
+                  "frm": "adso",
+                  "numdoc": "123456789"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Devuelve un mensaje de confirmación indicando que el aprendiz fue registrado correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": { "type": "string" }
+                  },
+                  "example": {
+                    "mensaje": "Aprendiz Registrado"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": { "type": "string" }
+                  },
+                  "example": {
+                    "mensaje": "faltan parametro en la peticion..."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+  }
+}
