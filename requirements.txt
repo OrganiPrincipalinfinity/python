@@ -2,3 +2,4 @@ Flask
 flask-mysqldb
 python-dotenv
 flask-jwt-extended
+gunicorn
